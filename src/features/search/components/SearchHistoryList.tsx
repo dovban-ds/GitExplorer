@@ -18,8 +18,11 @@ interface HistoryItemProps {
   onPress: (query: string) => void;
 }
 
-function HistoryItem({query, onPress}: HistoryItemProps) {
-  const handlePress = useCallback(() => onPress(query), [onPress, query]);
+const HistoryItem = React.memo(function HistoryItem({
+  query,
+  onPress,
+}: HistoryItemProps) {
+  const handlePress = () => onPress(query);
 
   return (
     <Pressable style={styles.item} onPress={handlePress}>
@@ -29,7 +32,7 @@ function HistoryItem({query, onPress}: HistoryItemProps) {
       </Text>
     </Pressable>
   );
-}
+});
 
 export function SearchHistoryList({onSearch, visible}: SearchHistoryListProps) {
   const {history} = useSearchHistory();

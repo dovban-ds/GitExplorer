@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -32,39 +32,35 @@ export function SearchBar({
   const [localValue, setLocalValue] = useState(value);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleChange = useCallback(
-    (text: string) => {
-      setLocalValue(text);
+  const handleChange = (text: string) => {
+    setLocalValue(text);
 
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
 
-      timerRef.current = setTimeout(() => {
-        onChangeText(text);
-      }, DEBOUNCE_MS);
-    },
-    [onChangeText],
-  );
+    timerRef.current = setTimeout(() => {
+      onChangeText(text);
+    }, DEBOUNCE_MS);
+  };
 
-  const handleClear = useCallback(() => {
+  const handleClear = () => {
     setLocalValue('');
     onChangeText('');
 
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
-  }, [onChangeText]);
+  };
 
-  const handleSubmit = useCallback(
-    (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
-      const trimmed = e.nativeEvent.text.trim();
-      if (trimmed.length > 0) {
-        onSubmit(trimmed);
-      }
-    },
-    [onSubmit],
-  );
+  const handleSubmit = (
+    e: NativeSyntheticEvent<TextInputSubmitEditingEventData>,
+  ) => {
+    const trimmed = e.nativeEvent.text.trim();
+    if (trimmed.length > 0) {
+      onSubmit(trimmed);
+    }
+  };
 
   const showClear = localValue.length > 0;
 

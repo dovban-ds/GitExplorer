@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
@@ -76,29 +76,18 @@ export function RepoDetailScreen() {
   const {repoName} = params;
   const navigation = useAppNavigation();
 
-  const shortName = useMemo(() => {
-    const separatorIndex = repoName.indexOf('/');
-    return separatorIndex === -1 ? repoName : repoName.slice(separatorIndex + 1);
-  }, [repoName]);
-
-  const [owner, repo] = useMemo(() => {
-    const separatorIndex = repoName.indexOf('/');
-    if (separatorIndex === -1) {
-      return [undefined, repoName] as const;
-    }
-    return [
-      repoName.slice(0, separatorIndex),
-      repoName.slice(separatorIndex + 1),
-    ] as const;
-  }, [repoName]);
+  const separatorIndex = repoName.indexOf('/');
+  const shortName =
+    separatorIndex === -1 ? repoName : repoName.slice(separatorIndex + 1);
+  const owner =
+    separatorIndex === -1 ? undefined : repoName.slice(0, separatorIndex);
+  const repo = repoName.slice(separatorIndex + 1);
 
   const {data, isLoading, isError, refetch} = useRepoDetail(owner, repo);
 
   const addRepo = useRecentlyViewedStore(state => state.addRepo);
 
-  const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+  const handleGoBack = () => navigation.goBack();
 
   useEffect(() => {
     if (data) {

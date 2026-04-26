@@ -13,7 +13,11 @@ import {Colors} from '@shared/constants';
 import {showSuccess} from '@shared/utils/toast';
 import {formatViewedAt} from '../utils/formatViewedAt';
 
-function HistoryItem({item}: {item: RecentlyViewedRepo}) {
+const HistoryItem = React.memo(function HistoryItem({
+  item,
+}: {
+  item: RecentlyViewedRepo;
+}) {
   const navigation = useAppNavigation();
 
   const handlePress = () => {
@@ -41,7 +45,7 @@ function HistoryItem({item}: {item: RecentlyViewedRepo}) {
       <ChevronRight size={20} color={Colors.textTertiary} />
     </Pressable>
   );
-}
+});
 
 function EmptyState() {
   return (
@@ -68,7 +72,7 @@ export function HistoryScreen() {
   const clearHistory = useRecentlyViewedStore(state => state.clearHistory);
   const navigation = useAppNavigation();
 
-  const handleClearHistory = useCallback(() => {
+  const handleClearHistory = () => {
     Alert.alert(
       'Clear History',
       'Are you sure you want to clear all recently viewed repositories?',
@@ -84,11 +88,9 @@ export function HistoryScreen() {
         },
       ],
     );
-  }, [clearHistory]);
+  };
 
-  const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+  const handleGoBack = () => navigation.goBack();
 
   const renderItem = useCallback(
     ({item}: {item: RecentlyViewedRepo}) => <HistoryItem item={item} />,

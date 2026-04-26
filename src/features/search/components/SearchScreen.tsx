@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Clock} from 'lucide-react-native';
@@ -15,12 +15,10 @@ export function SearchScreen() {
   const [isFocused, setIsFocused] = useState(false);
   const navigation = useAppNavigation();
 
-  const handleFocus = useCallback(() => setIsFocused(true), []);
-  const handleBlur = useCallback(() => setIsFocused(false), []);
-  const handleSubmit = useCallback((q: string) => setQuery(q), []);
-  const handleHistoryPress = useCallback(() => {
-    navigation.navigate('History');
-  }, [navigation]);
+  const handleFocus = () => setIsFocused(true);
+  const handleBlur = () => setIsFocused(false);
+  const handleSubmit = (q: string) => setQuery(q);
+  const handleHistoryPress = () => navigation.navigate('History');
 
   return (
     <SafeAreaView style={styles.root} edges={['top']}>

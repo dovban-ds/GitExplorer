@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {ActivityIndicator, RefreshControl, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {FlashList} from '@shopify/flash-list';
 
@@ -22,11 +22,14 @@ export function RepoListScreen({query, onHistoryPress}: RepoListScreenProps) {
     [data],
   );
 
+  const isFetchingRef = useRef(false);
+  isFetchingRef.current = isFetchingNextPage;
+
   const handleEndReached = useCallback(() => {
-    if (!isFetchingNextPage) {
+    if (!isFetchingRef.current) {
       fetchNextPage();
     }
-  }, [fetchNextPage, isFetchingNextPage]);
+  }, [fetchNextPage]);
 
   const renderItem = useCallback(({item}: {item: Repo}) => {
     return <RepoCard item={item} />;
