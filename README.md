@@ -180,7 +180,7 @@ In addition, I would spend some time on styling: SafeArea is used everywhere, bu
 
 ## APK Download
 
-Via **Releases** tab
+Via [Releases](https://github.com/dovban-ds/GitExplorer/releases/tag/demo) tab
 
 Built with:
 
